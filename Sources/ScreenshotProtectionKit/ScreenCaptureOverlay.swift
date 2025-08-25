@@ -108,6 +108,31 @@ public struct ScreenshotProtectedModifier<Placeholder: View>: ViewModifier {
     }
 }
 
+public struct TronProtect: ViewModifier {
+    let backgroundColor: Color
+
+    // TODO: Aqui usariamos a SOGrayPrimary como default, mas não temos acesso no pacote.
+    public init(color: Color) {
+        self.backgroundColor = color
+    }
+
+    public func body(content: Content) -> some View {
+        ZStack {
+
+            backgroundColor
+                .ignoresSafeArea(edges: .bottom)
+
+            CaptureWarningView()
+
+            content
+                .background(backgroundColor)
+                .screenshotProtected(placeholder: {
+                    CaptureWarningView()
+                })
+        }
+    }
+}
+
 public struct DefaultScreenCapturePlaceholder: View {
     public init() {}
 
